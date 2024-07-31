@@ -1,0 +1,12 @@
+transformers
+scikit-learn
+datasets
+jsonlines
+OpenAttack
+umap-learn
+wget
+sentence_transformers
+strsimpy
+hdbscan
+language-tool-python
+matplotlib
