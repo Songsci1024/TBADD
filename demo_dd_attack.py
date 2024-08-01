@@ -9,14 +9,13 @@ from openbackdoor.attackers import load_attacker
 from openbackdoor.trainers import load_trainer
 from openbackdoor.utils import set_config, logger, set_seed
 from openbackdoor.utils.visualize import display_results
-import yagmail
 import os
 # os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config_path',
                         type=str,
-                        default='./configs/badnets_config_dd.json')
+                        default='./configs/syn_config_dd.json')
     parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
     return args
@@ -56,5 +55,4 @@ if __name__ == '__main__':
     config = set_config(config)
     set_seed(args.seed)
     main(config)
-    send_email(config)
     

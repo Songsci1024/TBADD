@@ -54,7 +54,6 @@ class Trainer:
         train_loader: DataLoader,
         valid_clean_loader: DataLoader,
         valid_poison_loader: DataLoader,
-        bdClassifier: BackdoorClassifier,
         evaluator: Evaluator,
     ):
         model.cuda()
