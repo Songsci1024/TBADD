@@ -10,3 +10,8 @@ strsimpy
 hdbscan
 language-tool-python
 matplotlib
+hydra-core
+mlflow
+datasets
+evaluate
+
