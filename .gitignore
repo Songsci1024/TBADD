@@ -3,10 +3,6 @@
 logs/*
 experiments/logs
 !logs/.gitkeep
-poison_data/*
-hidden_states/*
-learning_curve/*
-models/*
 .vscode/
 *.egg-info/
 eggs/
@@ -43,3 +39,7 @@ docs/*
 
 bert-base-uncased/
 gpt2/
+poison_data/*
+hidden_states/*
+learning_curve/*
+models/*

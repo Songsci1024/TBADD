@@ -14,7 +14,7 @@ from openbackdoor.utils.visualize import display_results
 # os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config_path', type=str, default='./configs/syn_config.json')
+    parser.add_argument('--config_path', type=str, default='./configs/badnets_config.json')
     parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
     return args

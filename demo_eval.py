@@ -4,8 +4,8 @@ import pandas as pd
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--poison_file_path', type=str, default='./poison_data/sst-2/1/mix/badnet/train-poison.csv')
-    parser.add_argument('--orig_file_path', type=str, default='./poison_data/sst-2/1/mix/badnet/train-clean.csv')
+    parser.add_argument('--poison_file_path', type=str, default='./poison_data/sst-2/1/badnet/train-poison.csv')
+    parser.add_argument('--orig_file_path', type=str, default='./poison_data/sst-2/1/badnet/train-clean.csv')
     parser.add_argument('--eval_type', type=str, default='ppl', choices=['ppl', 'use', 'grammar'])
     args = parser.parse_args()
     return args
