@@ -46,7 +46,8 @@
         "swap_ratio": 0.5,
         "frr": 0.01,
         "batch_size": 32,
-        "use_oppsite_set": false
+        "use_oppsite_set": false,
+        "pretrained_model_path_dir": null
     },
     "clean-tune": false
 }

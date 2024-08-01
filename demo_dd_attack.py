@@ -15,7 +15,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config_path',
                         type=str,
-                        default='./configs/syn_config_dd.json')
+                        default='./configs/badnets_config_dd.json')
     parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
     return args

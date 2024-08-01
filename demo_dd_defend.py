@@ -13,7 +13,7 @@ from openbackdoor.utils.visualize import display_results
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--config_path', type=str, default='./configs/dd_defend/rap/badnets_config_dd.json')
-    parser.add_argument('--config_path', type=str, default='./configs/dd_defend/strip/badnets_config_dd.json')
+    # parser.add_argument('--config_path', type=str, default='./configs/dd_defend/strip/badnets_config_dd.json')
     parser.add_argument('--seed', type=int, default=42)
     args = parser.parse_args()
     return args

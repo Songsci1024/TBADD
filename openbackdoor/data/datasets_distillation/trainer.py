@@ -13,7 +13,7 @@ from tqdm import tqdm
 from transformers import get_scheduler
 from openbackdoor.data.datasets_distillation.distilled_data import DistilledData
 from openbackdoor.data.datasets_distillation.evaluator import Evaluator
-from openbackdoor.data.datasets_distillation.model import LearnerModel, BackdoorClassifier
+from openbackdoor.data.datasets_distillation.model import LearnerModel
 from openbackdoor.data.datasets_distillation.utils import batch_on_device, batch_no_poison_label, batch_get_poison_label
 
 logger = logging.getLogger(__name__)

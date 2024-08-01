@@ -147,13 +147,3 @@ class LearnerModel(nn.Module):
     @property
     def device(self):
         return self.bert_model.device
-
-
-# 创建一个Linear层，用于将bert的中间层embedding转换为分类结果
-class BackdoorClassifier(nn.Module):
-    def __init__(self, hidden_size, num_labels):
-        super().__init__()
-        self.linear = nn.Linear(hidden_size, num_labels)
-
-    def forward(self, hidden_states):
-        return self.linear(hidden_states[:, 0, :])

@@ -23,7 +23,7 @@ from transformers import set_seed
 from openbackdoor.data.datasets_distillation.data import DataConfig, DataModule
 from openbackdoor.data.datasets_distillation.distilled_data import DistilledData, DistilledDataConfig, LearnerTrainConfig
 from openbackdoor.data.datasets_distillation.evaluator import EvaluateConfig, Evaluator
-from openbackdoor.data.datasets_distillation.model import LearnerModel, ModelConfig, BackdoorClassifier
+from openbackdoor.data.datasets_distillation.model import LearnerModel, ModelConfig
 from openbackdoor.data.datasets_distillation.trainer import TrainConfig, Trainer
 from openbackdoor.data.datasets_distillation.utils import log_params_from_omegaconf_dict
 
@@ -91,16 +91,22 @@ def get_data(poison_data, eval_data, config):
     eval_dataset = eval_data
     config_openbackdoor = config
 
-@hydra.main(config_path="conf/", config_name="default", version_base=None)
+@hydra.main(config_path="conf/", config_name='default', version_base=None)
 @mlflow_start_run_with_hydra
 def DD(config: Config):
     logger.info(f"Config:\n{OmegaConf.to_yaml(config)}")
 
-    config.data.task_name = 'sst2'
+        
+    # config.data.task_name = 'sst2'
     
     # log config (mlflow)
     log_params_from_omegaconf_dict(config)
 
+    # judge whether to defend and use pretrained_model
+    if config_openbackdoor['defender'] is not None and config_openbackdoor['defender']['pretrained_model_path_dir'] is not None:
+        config.distilled_data.pretrained_data_path = os.path.join(  
+            config_openbackdoor['defender']['pretrained_model_path_dir'], 'checkpoints/best-ckpt/')
+        config.train.skip_train = True
     # Set seed
     set_seed(config.base.seed)
     # config.train.epoch = epoch
@@ -192,7 +198,8 @@ def DD(config: Config):
     distilled_data.cuda()
     model.init_weights()
     trained_model = evaluator.get_trained_model(model, distilled_data)
-    torch.save(trained_model.bert_model.state_dict(),'./data/trained_model.pth')
+    save_pth_path = os.path.join(config.base.save_dir, "trained_model.pth")
+    torch.save(trained_model.bert_model.state_dict(), save_pth_path)
     return
 def set_seed(seed):
     torch.manual_seed(seed)

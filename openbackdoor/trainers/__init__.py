@@ -7,7 +7,6 @@ from .por_trainer import PORTrainer
 from .lwp_trainer import LWPTrainer
 from .lws_trainer import LWSTrainer
 from .ripples_trainer import RIPPLESTrainer
-from .trainer_honeypot import HoneypotTrainer
 from .trainer_attention import AttentionTrainer
 TRAINERS = {
     "base": Trainer,
@@ -19,8 +18,6 @@ TRAINERS = {
     'lwp': LWPTrainer,
     'lws': LWSTrainer,
     'ripples': RIPPLESTrainer,
-    'honeypot': HoneypotTrainer,
-    'pal': AttentionTrainer
 }
 
 
