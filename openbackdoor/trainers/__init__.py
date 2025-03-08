@@ -7,7 +7,6 @@ from .por_trainer import PORTrainer
 from .lwp_trainer import LWPTrainer
 from .lws_trainer import LWSTrainer
 from .ripples_trainer import RIPPLESTrainer
-from .trainer_attention import AttentionTrainer
 TRAINERS = {
     "base": Trainer,
     "ep": EPTrainer,
