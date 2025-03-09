@@ -103,10 +103,10 @@ def DD(config: Config):
     log_params_from_omegaconf_dict(config)
 
     # judge whether to defend and use pretrained_model
-    if config_openbackdoor['defender'] is not None and config_openbackdoor['defender']['pretrained_model_path_dir'] is not None:
-        config.distilled_data.pretrained_data_path = os.path.join(  
-            config_openbackdoor['defender']['pretrained_model_path_dir'], 'checkpoints/best-ckpt/')
-        config.train.skip_train = True
+    # if config_openbackdoor['defender'] is not None and config_openbackdoor['defender']['pretrained_model_path_dir'] is not None:
+    #     config.distilled_data.pretrained_data_path = os.path.join(  
+    #         config_openbackdoor['defender']['pretrained_model_path_dir'], 'checkpoints/best-ckpt/')
+    #     config.train.skip_train = True
     # Set seed
     set_seed(config.base.seed)
     # config.train.epoch = epoch

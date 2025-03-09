@@ -36,7 +36,8 @@ save
 mlruns
 visualizaition/*
 docs/*
-
+roberta-base/*
+distilbert/*
 bert-base-uncased/
 gpt2/
 poison_data/*
