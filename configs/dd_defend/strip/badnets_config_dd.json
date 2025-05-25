@@ -51,7 +51,7 @@
         "frr": 0.01,
         "batch_size": 32,
         "use_oppsite_set": false,
-        "pretrained_model_path_dir": null
+        "pretrained_model_path_dir": "./save/checkpoints/"
     },
     "clean-tune": false
 }

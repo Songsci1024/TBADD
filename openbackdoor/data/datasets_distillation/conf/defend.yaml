@@ -6,6 +6,7 @@ base:
   save_method_dir: ${base.save_dir_root}/${base.experiment_name}/${base.method}
   save_dir: ${base.save_method_dir}/${now:%Y-%m-%d.%H-%M-%S}
   data_dir_root: ./data
+  save_pth: ${base.save_dir_root}/checkpoints/
   seed: 42
 
 data:
@@ -25,11 +26,10 @@ model:
   disable_dropout: True
 
 distilled_data:
-  pretrained_data_path: null
+  # pretrained_data_path: null
   # pretrained_data_path: /home/tmp/code/pc/interesting/songsci/paper_code/OpenBackdoor/save/sst2.bert-base-uncased/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2024-06-04.23-48-50/checkpoints/best-ckpt  # badnets
-  # pretrained_data_path: /home/tmp/code/pc/interesting/songsci/paper_code/OpenBackdoor/save/sst2.bert-base-uncased/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2024-06-04.23-49-12/checkpoints/best-ckpt/ # addsent
-  # pretrained_data_path: /home/tmp/code/pc/interesting/songsci/paper_code/OpenBackdoor/save/sst2.bert-base-uncased/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2024-06-04.23-49-35/checkpoints/best-ckpt/  # syn
-  # pretrained_data_path: /home/tmp/code/pc/interesting/songsci/paper_code/OpenBackdoor/save/sst2.bert-base-uncased/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2024-06-07.11-46-45/checkpoints/best-ckpt/  #style
+  # pretrained_data_path: /root/autodl-tmp/song/TBADD/save/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2025-05-15.16-04-46/checkpoints/best-ckpt/ #badnets
+  pretrained_data_path: /root/autodl-tmp/song/TBADD/save/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2025-05-15.17-41-23/checkpoints/best-ckpt  #syn
   data_per_label: 1
   attention_label_type: cls # [none, cls, all]
   attention_loss_lambda: 1.0
@@ -67,7 +67,7 @@ train:
 
 evaluate:
   task_name: ${data.task_name}
-  n_eval_model: 1
+  n_eval_model: 0
   fp16: False
   bf16: False
 

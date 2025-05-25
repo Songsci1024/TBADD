@@ -98,10 +98,12 @@ class DDAttacker(object):
         get_data(dataset, eval_dataset, config)
         model = DD()
         # defend
-        if config["defender"] is not None:
+        if config["defender"] is not None and config["defender"] is not False:
             distill_victim = load_victim(config["victim"])
             # laod model parameters
-            trained_model_path = os.path.join(config["defender"]["pretrained_model_path_dir"], 'trained_model.pth')
+            trained_model_path = os.path.join(
+                config["defender"]["pretrained_model_path_dir"],
+                'trained_model.pth')
             distill_victim.plm.load_state_dict(torch.load(trained_model_path))
             return distill_victim
         return model

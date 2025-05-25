@@ -15,6 +15,7 @@ from openbackdoor.data.datasets_distillation.distilled_data import DistilledData
 from openbackdoor.data.datasets_distillation.model import LearnerModel
 from openbackdoor.data.datasets_distillation.utils import average, batch_on_device, batch_no_poison_label
 from transformers import BertTokenizer
+
 logger = logging.getLogger(__name__)
 
 
@@ -81,7 +82,8 @@ class Evaluator:
         distilled_data.cuda()
         if n_eval_model is None:
             n_eval_model = self.config.n_eval_model
-
+        if n_eval_model == 0:
+            return {}
         all_results = []
         for i in trange(n_eval_model,
                         dynamic_ncols=True,
@@ -179,6 +181,7 @@ class Evaluator:
         results["loss"] = total_loss / num_samples
 
         return results
+
     def evaluate_fast(
         self,
         distilled_data: DistilledData,
@@ -192,7 +195,7 @@ class Evaluator:
             n_eval_model = self.config.n_eval_model
 
         reset_model_interval = max(len(eval_loader) // n_eval_model, 1)
-        
+
         total_loss, num_samples = 0, 0
         for i, batch in enumerate(
                 tqdm(eval_loader,
@@ -209,7 +212,6 @@ class Evaluator:
             with torch.no_grad():
                 with amp.autocast(enabled=self.use_amp, dtype=self.amp_dtype):
                     outputs = model(**input_batch)
-                
 
             assert outputs.loss.shape == (len(batch["labels"]), )
 
@@ -220,7 +222,9 @@ class Evaluator:
         results = self.metric.compute()
         results["loss"] = total_loss / num_samples
         return results
-    def get_trained_model(self, model: LearnerModel, distilled_data: DistilledData):
+
+    def get_trained_model(self, model: LearnerModel,
+                          distilled_data: DistilledData):
 
         model.train()
         train_config = distilled_data.train_config
@@ -264,6 +268,7 @@ class Evaluator:
                     with torch.no_grad():
                         params.sub_(batch["lr"] * params.grad)
         return model
+
     @property
     def use_amp(self):
         return self.config.fp16 or self.config.bf16

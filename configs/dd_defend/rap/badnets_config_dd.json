@@ -59,7 +59,7 @@
         ],
         "scale": 1,
         "frr": 0.01,
-        "pretrained_model_path_dir": "save/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2024-08-01.12-56-31"
+        "pretrained_model_path_dir": "./save/checkpoints/"
     },
     "clean-tune": false
 }

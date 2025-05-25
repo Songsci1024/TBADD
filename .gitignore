@@ -13,6 +13,7 @@ build/
 _build/
 **/build/
 outputs/
+defend_results/
 log.txt
 examples/
 hyperopt/

@@ -91,20 +91,20 @@ def get_data(poison_data, eval_data, config):
     eval_dataset = eval_data
     config_openbackdoor = config
 
-@hydra.main(config_path="conf/", config_name='default', version_base=None)
+
+@hydra.main(config_path="conf/", config_name='defend', version_base=None)
 @mlflow_start_run_with_hydra
 def DD(config: Config):
     logger.info(f"Config:\n{OmegaConf.to_yaml(config)}")
 
-        
     # config.data.task_name = 'sst2'
-    
+
     # log config (mlflow)
     log_params_from_omegaconf_dict(config)
 
     # judge whether to defend and use pretrained_model
     # if config_openbackdoor['defender'] is not None and config_openbackdoor['defender']['pretrained_model_path_dir'] is not None:
-    #     config.distilled_data.pretrained_data_path = os.path.join(  
+    #     config.distilled_data.pretrained_data_path = os.path.join(
     #         config_openbackdoor['defender']['pretrained_model_path_dir'], 'checkpoints/best-ckpt/')
     #     config.train.skip_train = True
     # Set seed
@@ -122,9 +122,9 @@ def DD(config: Config):
     # preprocess datasets
     # data_module.run_preprocess(tokenizer=model.tokenizer)
     train_loader = data_module.get_dataloader(poison_dataset['train'],
-                                            config.data.train_batch_size,
-                                            shuffle=True,
-                                            drop_last=True)
+                                              config.data.train_batch_size,
+                                              shuffle=True,
+                                              drop_last=True)
     vaild_clean_loader = data_module.get_dataloader(
         poison_dataset['dev-clean'],
         config.data.valid_batch_size,
@@ -135,8 +135,8 @@ def DD(config: Config):
         shuffle=False)
     print('valid_poison_loader', len(vaild_poison_loader))
     eval_clean_loader = data_module.get_dataloader(eval_dataset['test-clean'],
-                                                config.data.test_batch_size,
-                                                shuffle=False)
+                                                   config.data.test_batch_size,
+                                                   shuffle=False)
     eval_poison_loader = data_module.get_dataloader(
         eval_dataset['test-poison'],
         config.data.test_batch_size,
@@ -159,7 +159,7 @@ def DD(config: Config):
     # Evaluator
     evaluator = Evaluator(config.evaluate, model=model)
     # Train distilled data
-    w1 = 0.5    # default parameters
+    w1 = 0.5  # default parameters
     if not config.train.skip_train:
         trainer = Trainer(config.train, w1)
         trainer.fit(
@@ -173,22 +173,39 @@ def DD(config: Config):
 
     # Evaluate
     poison_results = evaluator.evaluate(distilled_data,
-                                eval_loader=eval_poison_loader,
-                                verbose=True)
+                                        eval_loader=eval_poison_loader,
+                                        verbose=True)
     clean_results = evaluator.evaluate(distilled_data,
-                                eval_loader=eval_clean_loader,
-                                verbose=True)
-    mlflow.log_metrics({f"clean_avg.{k}": v[0] for k, v in clean_results.items()})
-    mlflow.log_metrics({f"clean_std.{k}": v[1] for k, v in clean_results.items()})
-    
-    mlflow.log_metrics({f"poison_avg.{k}": v[0] for k, v in poison_results.items()})
-    mlflow.log_metrics({f"poison_std.{k}": v[1] for k, v in poison_results.items()})
-    
-    
-    results = {f"clean_{k}": f"{v[0]}±{v[1]}" for k, v in clean_results.items()} | {f"poison_{k}": f"{v[0]}±{v[1]}" for k, v in poison_results.items()}
-    
+                                       eval_loader=eval_clean_loader,
+                                       verbose=True)
+    mlflow.log_metrics({
+        f"clean_avg.{k}": v[0]
+        for k, v in clean_results.items()
+    })
+    mlflow.log_metrics({
+        f"clean_std.{k}": v[1]
+        for k, v in clean_results.items()
+    })
+
+    mlflow.log_metrics({
+        f"poison_avg.{k}": v[0]
+        for k, v in poison_results.items()
+    })
+    mlflow.log_metrics({
+        f"poison_std.{k}": v[1]
+        for k, v in poison_results.items()
+    })
+
+    results = {
+        f"clean_{k}": f"{v[0]}±{v[1]}"
+        for k, v in clean_results.items()
+    } | {
+        f"poison_{k}": f"{v[0]}±{v[1]}"
+        for k, v in poison_results.items()
+    }
+
     logger.info(f"Final Results: {results}")
-    
+
     save_path = os.path.join(config.base.save_dir, "results.json")
     json.dump(results, open(save_path, "w"))
     mlflow.log_artifact(save_path)
@@ -198,14 +215,17 @@ def DD(config: Config):
     distilled_data.cuda()
     model.init_weights()
     trained_model = evaluator.get_trained_model(model, distilled_data)
-    save_pth_path = os.path.join(config.base.save_dir, "trained_model.pth")
+    save_pth_path = os.path.join(config.base.save_pth, "trained_model.pth")
     torch.save(trained_model.bert_model.state_dict(), save_pth_path)
     return
+
+
 def set_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     random.seed(seed)
+
 
 # if __name__ == "__main__":
 #     main()

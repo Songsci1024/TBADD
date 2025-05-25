@@ -55,7 +55,7 @@
         ],
         "scale": 1,
         "frr": 0.01,
-        "pretrained_model_path_dir": null
+        "pretrained_model_path_dir": "./save/checkpoints/"
     },
     "clean-tune": false
 }
