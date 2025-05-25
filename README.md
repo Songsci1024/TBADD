@@ -53,8 +53,8 @@ python demo_dd_attack.py --config_path configs/style_config_dd.json
 
 Using trained target model parameters for defense (recommended):
 
-1. Run `demo_dd_attack.py` to obtain the trained model parameters `trained_model.pth` (located in the `save/` directory) after training on the distilled dataset.
-2. Specify the path of `trained_model.pth` in the `defender.pretrained_model_path_dir` field within the `config/dd_defend` directory. Like `"pretrained_model_path_dir": "save/dpc_1.step_1.bsz_1.label_hard.al_cls.lr_init_0.01.distill_lr_0.01/2024-07-02.12-56-31"`
+1. Modify the `distilled_data.pretrained_data_path` field in `defend.yaml` to the path where the distilled dataset `data_dict` obtained during the attack phase is located, for example, `save/xxx/best-ckpt/`.
+2. Change the `config_name` parameter in the line `@hydra.main(config_path="conf/", config_name='default', version_base=None)` of the `dd.py` file to `'defend'`. 
 3. Execute the demo_dd_defend.py file using scripts [RAP](#rap),[STRIP](#strip)
 
 If not using model parameters, train on the distilled dataset and then proceed with defense: Simply run demo_dd_defend.py.
