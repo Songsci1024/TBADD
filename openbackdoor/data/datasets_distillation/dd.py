@@ -92,7 +92,7 @@ def get_data(poison_data, eval_data, config):
     config_openbackdoor = config
 
 
-@hydra.main(config_path="conf/", config_name='defend', version_base=None)
+@hydra.main(config_path="conf/", config_name='default', version_base=None)
 @mlflow_start_run_with_hydra
 def DD(config: Config):
     logger.info(f"Config:\n{OmegaConf.to_yaml(config)}")
